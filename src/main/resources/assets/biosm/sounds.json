@@ -1,0 +1,12 @@
+{
+  "plains": {
+    "sounds": [
+      "biosm:plains"
+    ]
+  },
+  "desert": {
+    "sounds": [
+      "biosm:desert"
+    ]
+  }
+}
