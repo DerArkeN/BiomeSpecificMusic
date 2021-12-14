@@ -22,10 +22,6 @@ public class SwitchBiomeMixin {
 
     @Inject(method = "tick", at = @At(value="INVOKE", target="Lnet/minecraft/world/biome/Biome;getLoopSound()Ljava/util/Optional;"))
     public void onSwitch(CallbackInfo ci) {
-        ClientPlayerEntity player = this.player;
-        Biome biome = this.activeBiome;
-
-        SwitchBiomeCallback.EVENT.invoker().onSwitch(player, biome);
-
+        SwitchBiomeCallback.EVENT.invoker().onSwitch(this.player, this.activeBiome, this.soundManager);
     }
 }

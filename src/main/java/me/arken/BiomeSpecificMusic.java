@@ -3,7 +3,9 @@ package me.arken;
 import me.arken.events.SwitchBiomeCallback;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.sound.SoundCategory;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.sound.SoundInstance;
+import net.minecraft.sound.MusicSound;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
@@ -20,12 +22,16 @@ public class BiomeSpecificMusic implements ModInitializer {
     public void onInitialize() {
         Map sounds = registerSounds();
 
-        SwitchBiomeCallback.EVENT.register((player, biome) -> {
+        SwitchBiomeCallback.EVENT.register((player, biome, soundManager) -> {
             player.sendChatMessage("New Biome: " + biome.getCategory());
+            MinecraftClient client = MinecraftClient.getInstance();
 
             SoundEvent sound = (SoundEvent) sounds.get(biome.getCategory());
+            client.getMusicTracker().stop();
             if(sound != null) {
-                player.playSound(sound, SoundCategory.MUSIC, 1f, 1f);
+                MusicSound musicSound = new MusicSound(sound, 20*5, 20*5, true);
+
+                client.getMusicTracker().play(musicSound);
             }
 
             return ActionResult.PASS;
